@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="account_type_array">
+        <item name="account_student">Student account</item>
+        <item name="account_employer">Employer account</item>
+    </string-array>
+</resources>
