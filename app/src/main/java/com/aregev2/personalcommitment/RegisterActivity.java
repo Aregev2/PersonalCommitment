@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     String username;
     String email;
     String password;
+
+    int accountType = 0;
 
 
     @Override
@@ -60,14 +67,22 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!username.isEmpty()){
                     if(!email.isEmpty()){
                         if(!password.isEmpty()){
-                            textInputLayoutUsername.setError(null);
-                            textInputLayoutEmail.setError(null);
-                            textInputLayoutPassword.setError(null);
+                            accountType = 0;
                             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(RegisterActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+                                        firebaseUser.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Log.i("ACCOUNT", "Username set!");
+                                                }
+                                            }
+                                        });
                                     }else{
                                         Toast.makeText(RegisterActivity.this, "Account Error" + task.getException(), Toast.LENGTH_SHORT).show();
                                     }
@@ -84,11 +99,63 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        editTextUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textInputLayoutUsername.setError(null);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textInputLayoutEmail.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textInputLayoutPassword.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        Toast.makeText(this, "Working", Toast.LENGTH_SHORT).show();
+        onBackPressed();
         return true;
     }
 
