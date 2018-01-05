@@ -30,8 +30,8 @@ public class SplashActivity extends AppCompatActivity {
 
         String userEmail = sharedPreferences.getString("USER_EMAIL", null);
         String userPassword = sharedPreferences.getString("USER_PASSWORD", null);
-        if(!userEmail.isEmpty()) {
-            if (!userPassword.isEmpty()) {
+        if(userEmail != null) {
+            if (userPassword != null) {
                 firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }else{
             Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
+            startActivity(intent);
         }
     }
 }
