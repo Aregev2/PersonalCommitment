@@ -7,8 +7,11 @@
         android:id="@+id/activity_main_menu_group_main"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/activity_main_menu_statistics"
-            android:title="Statistics" />
+            android:id="@+id/activity_main_menu_volunteer"
+            android:title="Volunteer" />
+        <item
+            android:id="@+id/activity_main_menu_reports"
+            android:title="My Reports" />
         <item
             android:id="@+id/activity_main_menu_profile"
             android:title="Profile" />
